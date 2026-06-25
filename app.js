@@ -281,6 +281,33 @@ function saveUserScore(score) {
   localStorage.setItem("nalyyScores", JSON.stringify([score, ...saved].slice(0, 20)));
 }
 
+async function loadSharedScores() {
+  try {
+    const response = await fetch("/api/scores", { cache: "no-store" });
+    if (!response.ok) throw new Error("Shared scores unavailable");
+    const data = await response.json();
+    const sharedScores = Array.isArray(data.scores) ? data.scores : [];
+    scores = [...sharedScores, ...starterScores];
+    renderLeaderboard();
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+async function publishSharedScore(entry) {
+  const response = await fetch("/api/scores", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(entry),
+  });
+  if (!response.ok) throw new Error("Score not saved globally");
+  const data = await response.json();
+  const sharedScores = Array.isArray(data.scores) ? data.scores : [];
+  scores = [...sharedScores, ...starterScores];
+  renderLeaderboard();
+}
+
 function iconMarkup(game) {
   if (game.icon === "balloon") return `<span class="balloon-icon" aria-hidden="true"></span>`;
   return `<i data-lucide="${game.icon}"></i>`;
@@ -369,7 +396,7 @@ function closeScore() {
   scoreModal.setAttribute("aria-hidden", "true");
 }
 
-function publishScore() {
+async function publishScore() {
   const cleanName = playerName.value.trim() || "Player";
   const now = new Date();
   const entry = {
@@ -378,9 +405,19 @@ function publishScore() {
     score: activeScore,
     date: now.toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" }),
   };
+  const publishButton = document.querySelector("#publishScore");
+  publishButton.disabled = true;
+  publishButton.querySelector("span").textContent = "Publishing...";
   scores = [entry, ...scores];
   saveUserScore(entry);
   renderLeaderboard();
+  try {
+    await publishSharedScore(entry);
+  } catch {
+    renderLeaderboard();
+  }
+  publishButton.disabled = false;
+  publishButton.querySelector("span").textContent = "Publish Score";
   closeScore();
   setRoute("leaderboard");
 }
@@ -1107,6 +1144,7 @@ function refreshIcons() {
 renderGames();
 renderFilters();
 renderLeaderboard();
+loadSharedScores();
 refreshIcons();
 
 document.addEventListener("pointermove", (event) => {
