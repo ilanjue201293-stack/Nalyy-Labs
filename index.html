@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Nalyy Labs</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="cursor-glow" id="cursorGlow"></div>
+    <div class="app-shell">
+      <header class="topbar">
+        <button class="brand nav-jump" data-route="home" aria-label="Nalyy Labs home">
+          <img src="assets/brand-horizontal-clean.png" alt="Nalyy Labs" />
+        </button>
+
+        <nav class="desktop-nav" aria-label="Main navigation">
+          <button class="nav-link active" data-route="games">Games</button>
+          <button class="nav-link" data-route="leaderboard">Leaderboard</button>
+        </nav>
+
+        <div class="top-actions">
+          <a class="discord-link" href="https://discord.gg/GR46FEZBZS" target="_blank" rel="noreferrer" aria-label="Discord">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M19.54 5.34A17.3 17.3 0 0 0 15.3 4l-.2.39c1.5.36 2.2.88 2.2.88a13.9 13.9 0 0 0-6.6-.65c-.35.03-.68.08-1 .14-.22.04-.76.16-1.44.43 0 0 .74-.55 2.33-.91L10.46 4c-1.52.26-2.93.72-4.25 1.35 0 0-2.18 3.16-2.55 9.39 2.2 2.51 5.54 2.38 5.54 2.38l.68-.91c-1.29-.38-1.78-1.1-1.78-1.1.16.1.43.22.49.25 2.04.95 4.3 1.16 6.86.43.42-.12.9-.3 1.4-.56 0 0-.51.75-1.84 1.12l.66.88s3.35.08 5.55-2.43c-.43-6.22-2.68-9.46-2.68-9.46ZM9.35 13.56c-.82 0-1.48-.72-1.48-1.6s.65-1.6 1.48-1.6c.82 0 1.5.72 1.48 1.6 0 .88-.66 1.6-1.48 1.6Zm5.31 0c-.82 0-1.48-.72-1.48-1.6s.65-1.6 1.48-1.6c.83 0 1.5.72 1.48 1.6 0 .88-.65 1.6-1.48 1.6Z" />
+            </svg>
+          </a>
+          <button class="menu-toggle" aria-label="Open menu">
+            <i data-lucide="menu"></i>
+          </button>
+        </div>
+      </header>
+
+      <main>
+        <section class="view hero-view active" data-view="home">
+          <div class="hero-card">
+            <img class="hero-logo icon-logo" src="assets/nl-icon-clean.png" alt="Nalyy Labs" />
+            <h1>NALYY LABS</h1>
+            <p class="tagline">One Button, One Game.</p>
+            <p class="subline">Small games.<br />Big challenges.</p>
+
+            <div class="hero-actions">
+              <button class="primary-btn nav-jump" data-route="games">
+                <i data-lucide="gamepad-2"></i>
+                <span>Play Games</span>
+                <i data-lucide="chevron-right"></i>
+              </button>
+              <button class="soft-btn nav-jump" data-route="leaderboard">
+                <i data-lucide="bar-chart-3"></i>
+                <span>Leaderboard</span>
+                <i data-lucide="chevron-right"></i>
+              </button>
+            </div>
+          </div>
+          <button class="scroll-cue nav-jump" data-route="games" aria-label="Go to games">
+            <i data-lucide="chevron-down"></i>
+          </button>
+        </section>
+
+        <section class="view page-view" data-view="games">
+          <div class="page-heading">
+            <span class="dot"></span>
+            <div>
+              <h2>All Games</h2>
+              <p>One button is all it takes.</p>
+            </div>
+          </div>
+          <div class="games-grid" id="gamesGrid"></div>
+        </section>
+
+        <section class="view page-view game-view" data-view="game">
+          <button class="back-btn nav-jump" data-route="games">
+            <i data-lucide="chevron-left"></i>
+            <span>All Games</span>
+          </button>
+          <div class="game-shell" id="gameShell"></div>
+        </section>
+
+        <section class="view page-view" data-view="leaderboard">
+          <div class="page-heading">
+            <span class="dot"></span>
+            <div>
+              <h2>Leaderboard</h2>
+              <p>The best scores across all games.</p>
+            </div>
+          </div>
+
+          <div class="filters">
+            <label>
+              <span>Game</span>
+              <select id="gameFilter">
+                <option>All Games</option>
+              </select>
+            </label>
+            <label>
+              <span>Range</span>
+              <select id="rangeFilter">
+                <option>All Time</option>
+                <option>This Week</option>
+                <option>Today</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Rank</th>
+                  <th>Player</th>
+                  <th>Game</th>
+                  <th>Score</th>
+                  <th>Date</th>
+                </tr>
+              </thead>
+              <tbody id="leaderboardRows"></tbody>
+            </table>
+          </div>
+        </section>
+      </main>
+
+      <footer class="footer">
+        <img src="assets/brand-horizontal-clean.png" alt="Nalyy Labs" />
+        <p>One Button, One Game.</p>
+        <a href="https://discord.gg/GR46FEZBZS" target="_blank" rel="noreferrer" aria-label="Discord">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M19.54 5.34A17.3 17.3 0 0 0 15.3 4l-.2.39c1.5.36 2.2.88 2.2.88a13.9 13.9 0 0 0-6.6-.65c-.35.03-.68.08-1 .14-.22.04-.76.16-1.44.43 0 0 .74-.55 2.33-.91L10.46 4c-1.52.26-2.93.72-4.25 1.35 0 0-2.18 3.16-2.55 9.39 2.2 2.51 5.54 2.38 5.54 2.38l.68-.91c-1.29-.38-1.78-1.1-1.78-1.1.16.1.43.22.49.25 2.04.95 4.3 1.16 6.86.43.42-.12.9-.3 1.4-.56 0 0-.51.75-1.84 1.12l.66.88s3.35.08 5.55-2.43c-.43-6.22-2.68-9.46-2.68-9.46ZM9.35 13.56c-.82 0-1.48-.72-1.48-1.6s.65-1.6 1.48-1.6c.82 0 1.5.72 1.48 1.6 0 .88-.66 1.6-1.48 1.6Zm5.31 0c-.82 0-1.48-.72-1.48-1.6s.65-1.6 1.48-1.6c.83 0 1.5.72 1.48 1.6 0 .88-.65 1.6-1.48 1.6Z" />
+          </svg>
+        </a>
+      </footer>
+    </div>
+
+    <div class="modal-backdrop" id="scoreModal" aria-hidden="true">
+      <div class="score-card" role="dialog" aria-modal="true" aria-labelledby="scoreTitle">
+        <button class="close-modal" id="closeModal" aria-label="Close">
+          <i data-lucide="x"></i>
+        </button>
+        <div class="trophy">
+          <i data-lucide="trophy"></i>
+        </div>
+        <h2 id="scoreTitle">New Best Score!</h2>
+        <p>Your score is ready to be published.</p>
+        <div class="score-summary">
+          <div>
+            <span>Game</span>
+            <strong id="modalGame">Reaction Test</strong>
+          </div>
+          <div>
+            <span>Score</span>
+            <strong id="modalScore">184 ms</strong>
+          </div>
+        </div>
+        <label class="name-field">
+          <span>Choose a username to appear on the leaderboard.</span>
+          <div>
+            <i data-lucide="user"></i>
+            <input id="playerName" maxlength="18" placeholder="Enter your username" />
+          </div>
+        </label>
+        <button class="primary-btn publish-btn" id="publishScore">
+          <i data-lucide="upload"></i>
+          <span>Publish Score</span>
+        </button>
+        <button class="private-btn" id="keepPrivate">Keep Private</button>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
