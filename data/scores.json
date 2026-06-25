@@ -1,5 +1,11 @@
 [
   {
+    "player": "Player",
+    "game": "Inflate",
+    "score": "63% - 5.7/10",
+    "date": "25 Jun 2026"
+  },
+  {
     "player": "Test",
     "game": "Find The Music",
     "score": "4340 pts - 6.8/10",
